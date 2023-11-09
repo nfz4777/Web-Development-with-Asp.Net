@@ -1,0 +1,122 @@
+@model VacationRentalServiceSystem_MVC.Models.Registrations
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Log in form begin --> 
+    <div class="container" style="margin-left: 30%;margin-top: 10%;">
+        <div class="row">
+            <div class="col-md-8 alert alert-info">
+                @using (Html.BeginForm("Login", "Host"))
+            {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <h3 class="text-center">Log In</h3>
+                      
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <form id="loginform">
+
+                            <div class="form-group">
+                                
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                    <input class="form-control" type="email" name="email" id="log_email" placeholder="Enter your email" />
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                               
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                    <input class="form-control" type="password" name="password" id="log_password" placeholder="Enter your password" />
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </form>
+                        <div class="form-group">
+                            
+                                <button type="submit"  class="btn btn-info form-control"><i class="glyphicon glyphicon-log-in" ></i> Log In</button>
+                          
+                        </div>
+                        <div class="form-group">
+
+                            <a  href="#"  style="float:left">Forget Password ?</a><a href="$" style="float:right; cursor:pointer" onclick="Signup()">Sign Up</a>
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+   <!-- Log in form end --> 
+
+    <!-- Registration form begin --> 
+<div class="container">
+    <div class="modal fade" id="show_reg_form">
+         <div class="modal-dialog">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <a href="#" class="close" data-dismiss="modal">&times;</a>
+                     <h4>Registration</h4>
+                 </div>
+                 <div class="modal-body">
+                     <form id="regform">
+
+                         <div class="form-group">
+
+                             <div class="input-group">
+                                 <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                 <input class="form-control" type="text" name="firstname" id="first_name" placeholder="Enter Firstname" />
+                                
+                             </div>
+                         </div>
+
+                         <div class="form-group">
+
+                             <div class="input-group">
+                                 <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                 <input class="form-control" type="text" name="secondname" id="second_name" placeholder="Enter Secondname" />
+                                
+                             </div>
+                         </div>
+                     </form>
+                     <div class="form-group">
+
+                         <button type="submit" class="btn btn-info form-control"><i class="glyphicon glyphicon-registration-mark"></i> Log In</button>
+
+                     </div>
+                 </div>
+             </div>
+         </div>
+   </div>
+
+</div>
+    <!-- Registration  form end --> 
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+   
+
+    <script>
+        function Signup() {
+            $("#show_reg_form").modal();
+        }
+    </script>
+</body>
+</html>

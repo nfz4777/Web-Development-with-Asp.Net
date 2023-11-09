@@ -1,0 +1,141 @@
+using Subgurim.Controles;
+using Subgurim.Controles.GoogleChartIconMaker;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using VacationRentalServiceSystem_MVC.Models;
+
+
+namespace VacationRentalServiceSystem_MVC.Controllers
+{
+    public class HomeController : Controller
+    {
+        private VRSS_DB_Context db = new VRSS_DB_Context();
+        public ActionResult Index(string searclocation)
+        {
+            List<Homes> home = db.Homes.Where(m => m.Location.StartsWith(searclocation) || searclocation == null).ToList();
+            
+            return View(home);
+        }
+        public JsonResult GetLocations(string term)
+        {
+           
+            List<string> locations = db.Homes.Where(s => s.Location.StartsWith(term))
+                .Select(x => x.Location).ToList();
+            return Json(locations, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult SignUp()
+        {
+            
+            
+        return View("SignUp");
+        }
+
+        [HttpPost]
+        public ActionResult SignUp(Registrations reg)
+        {
+
+            using (VRSS_DB_Context db1 = new VRSS_DB_Context())
+            {
+                db1.Registrations.Add(reg);
+
+                db1.SaveChanges();
+            }
+            return View("SignUp",reg);
+        }
+
+        public ActionResult Contact()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+
+
+        // Fetch All Homes 
+
+        public ActionResult GoogleMap(string searchlocationhome)
+        {
+            List<Homes> allhome = db.Homes.Where(m => (m.Location.StartsWith(searchlocationhome) || searchlocationhome == null) && m.Lodge_Type == "Home").ToList();
+
+            return View(allhome);
+        }
+
+        //public ActionResult GoogleMap()
+        //{
+        //    List<Homes> allhome = db.Homes.Where(h => h.Lodge_Type == "Home").ToList();
+
+        //    return View(allhome);
+        //}
+
+        public JsonResult MarkAllHomesLocation()
+       {
+            var map = db.Homes.Where(h => h.Lodge_Type == "Home").ToList();
+        return Json(map, JsonRequestBehavior.AllowGet);
+       }
+
+        //public ActionResult AllHomes(string searchlocationhome)
+        //{
+        //    List<Homes> allhome = db.Homes.Where(m => m.Location.StartsWith(searchlocationhome) || searchlocationhome == null).ToList();
+
+        //    return View(allhome);
+        //}
+        public JsonResult GetHomesLocationsDynamically(string term)
+        {
+
+            List<string> locations = db.Homes.Where(s => s.Location.StartsWith(term) && s.Lodge_Type == "Home")
+                .Select(x => x.Location).ToList();
+            return Json(locations, JsonRequestBehavior.AllowGet);
+        }
+
+        // Fetch All AllRestaurants 
+        public ActionResult AllRestaurants(string searchlocationrestaurants)
+        {
+            List<Homes> allRestaurants = db.Homes.Where(m => (m.Location.StartsWith(searchlocationrestaurants) || searchlocationrestaurants == null)&& m.Lodge_Type == "Restaurant").ToList();
+
+            return View(allRestaurants);
+        }
+
+        public JsonResult MarkAllRestaurantsLocation()
+        {
+            var map = db.Homes.Where(h => h.Lodge_Type == "Restaurant").ToList();
+            return Json(map, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetRestaurantsLocationsDynamically(string term)
+        {
+
+            List<string> locations = db.Homes.Where(s => s.Location.StartsWith(term) && s.Lodge_Type == "Restaurant")
+                .Select(x => x.Location).ToList();
+            return Json(locations, JsonRequestBehavior.AllowGet);
+        }
+
+        // Fetch All AllPlaces 
+        public ActionResult AllPlaces(string searchlocationplaces)
+        {
+            List<Homes> allPlaces = db.Homes.Where(m => (m.Location.StartsWith(searchlocationplaces) || searchlocationplaces == null)&& m.Lodge_Type == "Place").ToList();
+
+            return View(allPlaces);
+        }
+
+        public JsonResult MarkAllPlacesLocation()
+        {
+            var map = db.Homes.Where(h => h.Lodge_Type == "Place").ToList();
+            return Json(map, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetPlacesLocationsDynamically(string term)
+        {
+
+            List<string> locations = db.Homes.Where(s => s.Location.StartsWith(term) && s.Lodge_Type == "Place")
+                .Select(x => x.Location).ToList();
+            return Json(locations, JsonRequestBehavior.AllowGet);
+        }
+
+
+    }
+}

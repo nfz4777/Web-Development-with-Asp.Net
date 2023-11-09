@@ -1,0 +1,27 @@
+@model VacationRentalServiceSystem_MVC.Models.Homes
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>_Index</title>
+</head>
+<body>
+    <div class="thumbnail" >
+    <div target="_blank">
+            <img src="@Url.Content(Model.Photos)" alt="@Model.Alter_Text" style="height:200px; width:100%" />
+            <div class="caption" >
+                @Html.DisplayFor(model => model.Location)
+                <div>
+                    <p>@Html.DisplayFor(model => model.Price)</p>
+                </div>
+           </div>           
+</div> 
+    </div>
+</body>
+</html>

@@ -1,0 +1,417 @@
+@model VacationRentalServiceSystem_MVC.Models.Homes
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="alert alert-info" style="">
+        <h4>Details</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-8">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ID)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.ID)
+                        @*<input name="ID" id="id" value="@Model.ID"/>*@
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Lodge_Name)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Lodge_Name)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Rental_Numbers)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Rental_Numbers)
+                    </dd>
+
+                    <dt>
+                       @Html.DisplayNameFor(model => model.Location)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Location)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Guest_Numbers)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Guest_Numbers)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Bedroom_Numbers)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Bedroom_Numbers)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Bed_Numbers)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Bed_Numbers)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Bathromm_Numbers)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Bathromm_Numbers)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Short_Description)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Short_Description)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Price)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Photos)
+                    </dt>
+
+                    <dd>
+                        <img src="@Url.Content(Model.Photos)" alt="@Model.Alter_Text" style="width:30%" />
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Alter_Text)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Alter_Text)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Lat)
+                    </dt>
+
+                    <dd>
+                       @Html.DisplayFor(model => model.Lat)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Lng)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Lng)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Address)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Lodge_Type)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Lodge_Type)
+                    </dd>
+
+                </dl>
+            </div>
+            <div class="col-md-4">
+                <div class="alert alert-success" id="map" style="width: 300px; height: 400px;"></div>
+            </div>
+        </div>
+      
+    </div>
+
+    <!-- Payment and Email form begin -->
+    <div class="form-group">
+
+        <a href="%" data-toggle="modal" data-target="#show_payment_form" style=" cursor:pointer" onclick="Payment_Form()">I Will Reserve</a>
+
+    </div>
+ 
+    <div class="container">
+        <div class="modal fade" id="show_payment_form">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="close" data-dismiss="modal">&times;</a>
+                        <h4>Your Payment</h4>
+                    </div>
+                    <div id="msg1">
+                        <div class="alert alert-success">
+                            <span><i class="glyphicon glyphicon-ok"></i></span><strong>
+                                Your payment is completed
+                                <br />
+                                Send an email to your email address..Check inbox please...
+                            </strong>
+                        </div>
+                    </div>
+                    <div id="msg2">
+                        <div class="alert alert-danger">
+                            <span><i class="glyphicon glyphicon-remove"></i></span><strong>Your payment is not completed</strong>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <form id="payment_form">
+                            <div class="form-group">
+
+                                <div  class="input-group">
+                                    
+                                    @*@Html.DisplayFor(model => model.Email)*@
+                                    <input required class="form-control" value="@Model.Email" type="text" name="Owner_Email" id="owner_Email"  />
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                    <input required class="form-control" type="email" value="" name="Buyer_Email" id="buyer_email" placeholder="Enter your email" />
+
+                                </div>
+                            </div>
+
+                           
+                        </form>
+                       
+                        <form id="date_time_form">
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input name="Booking_DateTime" value="@DateTime.Now.ToString("dd-MM-yyyy hh.mm.ss.ffffff")" id="datetime" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input name="ID" value="@Model.ID" id="Ow_id" />
+                                </div>
+                            </div>
+
+
+
+
+
+
+                        </form>
+                       
+                        <div class="form-group">
+
+                            <button type="submit" onclick="SendMails()" class="btn btn-info form-control"><i class="glyphicon glyphicon-registration-mark"></i> Reserved</button>
+
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Payment and Email form begin -->
+
+
+   
+    <script type="text/javascript">
+        var id = document.getElementById("id").value;
+        var map;
+        function initMap() {
+
+            var options = {
+
+                center: { lat: 23.810332, lng: 90.412518 },
+                zoom: 5
+            };
+            map = new google.maps.Map(document.getElementById('map'), options);
+
+            $.get("@Url.Action("MarkAllLocations", "Home")", function (data, status) {
+                var marker = [];
+                var contentString = [];
+                var infowindow = [];
+                var icons = [];
+                var id = [];
+
+                var iconIndex = 0;
+                for (var i = 0; i < data.length; i++) {
+                    icons[i] = data[i].Price;
+                    id[i] = data[i].ID;
+                    marker[i] = new google.maps.Marker({
+                        position: { lat: data[i].Lat, lng: data[i].Lng },
+                        //label: icons[iconIndex++ % icons.length],
+                        label: {
+                        text: icons[iconIndex++ % icons.length],
+                            fontWeight: 'bold',
+                            fontSize: '10px',
+                            fontFamily: '"Courier New", Courier,Monospace',
+                            color: 'black'
+                        },
+
+                        icon: {
+                        url: '../Icons/map-icon-surface-metal.png',
+                            size: new google.maps.Size(30, 30),
+                            origin: new google.maps.Point(0, 0),
+                            anchor: new google.maps.Point(0, 20),
+                            scaledSize: new google.maps.Size(30, 30),
+                            labelOrigin: new google.maps.Point(14, 12)
+                        },
+
+                        map: map
+                    });
+
+                    @*var url = '@Url.Action("Details", "Home")?itemId=' + data[i].ID;
+                    contentString[i] = '<a href="@Url.Action("Details", "Home")?id= '+ data[i].ID+'"  style="text-decoration:none;color:black;  >'
+                        + '<img style="width:200px; height:200px;" src="'+  data[i].Photos +'"  alt ="' + data[i].Alter_Text+'" />'
+                        +'<p>'
+                        + data[i].Price
+                        +'</br>'
+                        + data[i].Location
+                        + '</p>'
+                        + '</a>'
+                        + '</br>' ;
+
+                    var marker_value = marker[i];
+                    infowindow[i] = new google.maps.InfoWindow({
+                        content: contentString[i]
+                    });
+
+
+                    google.maps.event.addListener(marker[i], 'click', (function (marker_value, i) {
+                        return function () {
+                            infowindow[i].open(map, marker[i]);
+                        }
+
+                    })(marker[i], i));*@
+                }
+
+            });
+
+        }
+
+
+    </script>
+    
+    <script>
+        function Payment_Form() {
+            $("#show_payment_form").modal();
+            $("#msg1").hide();
+            $("#msg2").hide();
+
+        }
+
+        function SendMails() {
+
+            SendMail_Owner();
+            SendMail_Buyer();
+          
+            //AddCurrent_DateTime();
+
+        }
+
+        function SendMail_Owner() {
+
+            var datas_owner = $("#payment_form").serialize();
+            var owner_Email = $("#owner_Email").val();
+            //var buyer_email = $("#buyer_email").val();
+
+          
+
+            $.ajax({
+                type: "post",
+                data: datas_owner,
+
+                url: "/Host/Email_Payment_Owner",
+                success: function (result) {
+                    alert(result);
+                    $("#msg1").show();
+                    $("#msg2").hide();
+                    $("#payment_form")[0].reset();
+                }
+                
+            });
+        }
+
+        function SendMail_Buyer() {
+
+            var datas_buyer = $("#payment_form").serialize();
+           // var owner_Email = $("#owner_Email").val();
+            var buyer_email = $("#buyer_email").val();
+            if (buyer_email == "") {
+                $("#msg1").hide();
+                $("#msg2").show();
+            }
+            
+
+            $.ajax({
+                type: "post",
+                data: datas_buyer,
+
+                url: "/Host/Email_Payment_Buyer",
+                success: function (result) {
+                    alert(result);
+                    $("#msg1").show();
+                    $("#msg2").hide();
+                    $("#payment_form")[0].reset();
+                }
+            });
+        }
+
+        function AddCurrent_DateTime() {
+
+            var datas = $("#date_time_form").serialize();
+            var datetime = $("#datetime").val();
+            //var buyer_email = $("#buyer_email").val();
+
+
+
+            $.ajax({
+                type: "post",
+                data: datas,
+
+                url: "/Host/SaveCurrentDateTime"
+                
+
+            });
+        }
+
+    </script>
+
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8xnA_5khbykJTHwbaPXNisdPRaYgcHSI&callback=initMap"
+            type="text/javascript"></script>
+</body>
+</html>

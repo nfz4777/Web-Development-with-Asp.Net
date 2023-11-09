@@ -1,0 +1,3 @@
+Issues::
+1.  muitiple guest booked a lodge at a time
+2.  profile specially price  update when a guest request for booking

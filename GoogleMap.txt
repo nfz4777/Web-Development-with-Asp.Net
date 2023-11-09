@@ -1,0 +1,256 @@
+@model IEnumerable<VacationRentalServiceSystem_MVC.Models.Homes>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+   
+    <title>Homes</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+<body> 
+    <!--````````Menu Bar Begin `````  -->
+    <div class="menu">
+        <div class="container-fluid ">
+            <nav class="navbar navbar-default navbar-fixed-top">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="#" class="navbar-brand">Brand</a>
+                </div>
+                <!-- Collection of nav links, forms, and other content for toggling -->
+                <div id="navbarCollapse" class="collapse navbar-collapse">
+                    <form class="navbar-form navbar-left" action="@Url.Action("GoogleMap","Home")">
+                       
+                           
+                            <input type="text" id="searchInputhome" name="searchlocationhome" class="form-control" placeholder="Search">
+
+                       
+                    </form>
+                    
+
+                    <ul class="nav navbar-nav navbar-right menu_list">
+                        <li><a href="@Url.Action("BecomeHost","Host")">Become A Host</a></li>
+                        <li><a href="#">Help</a></li>
+                        <li><a href="@Url.Action("SignUp","Home")">Sign Up</a></li>
+                        <li><a href="#">Log In</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!--````````Menu Bar End `````  -->
+
+    <br />
+    <br />
+    
+    <!--  Homes Gallery  -->
+    
+    <div class="homesmap">
+
+        <div class="container-fluid">
+            <h1 style="margin-left:30px;">H_O_M_E_S</h1>
+            <div class="row">
+                <div class="col-md-5">
+                   
+@foreach (var item in Model)
+    {
+         <div  class="gallery"></div>
+    }
+                                                    
+                </div>
+                <div class="col-md-7">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--     End Homes galary   -->
+
+
+
+    
+
+     
+       
+    <!--``````````Google Map````````-->
+    <script>
+       
+
+
+
+
+        var map;
+   function initMap() {
+
+            var options = {
+
+                center: { lat: 23.810332, lng: 90.412518 },
+                zoom: 5
+            };
+            map = new google.maps.Map(document.getElementById('map'), options);
+
+            $.get("@Url.Action("MarkAllHomesLocation","Home")", function (data, status) {
+                var marker = [];
+                var contentString = [];
+                var infowindow = [];
+                var icons = [];
+                event = [];
+                var iconIndex = 0;
+                for (var i = 0; i < data.length; i++) {
+                    icons[i] = data[i].Price;
+
+
+                    marker[i] = new google.maps.Marker({
+                        position: { lat: data[i].Lat, lng: data[i].Lng },
+                        //label: icons[iconIndex++ % icons.length],
+                        label: {
+                            text: icons[iconIndex++ % icons.length],
+                            fontWeight: 'bold',
+                            fontSize: '5px',
+                            fontFamily: '"Courier New", Courier,Monospace',
+                            color: 'black'
+                        },
+
+                        icon: {
+                            url: '../Icons/map-icon-surface-metal.png',
+                            size: new google.maps.Size(30, 30),
+                            origin: new google.maps.Point(0, 0),
+                            anchor: new google.maps.Point(0, 20),
+                            scaledSize: new google.maps.Size(30, 30),
+                            labelOrigin: new google.maps.Point(9, 8)
+                        },
+
+                        map: map
+                    });
+
+
+
+                    contentString[i] = 
+                        '<a href="#" >' +
+                        '<h6 id="firstHeading" class="firstHeading">' + data[i].Price + '</h6>' +
+                        '</a>';
+                   
+                    var marker_value = marker[i];
+                    infowindow[i] = new google.maps.InfoWindow({
+                        content: contentString[i]
+                    });
+
+
+                    google.maps.event.addListener(marker[i], 'click', (function (marker_value, i) {
+                        return function () {
+                            infowindow[i].open(map, marker[i]);
+                        }
+
+                    })(marker[i], i));
+
+
+                    google.maps.event.addListener(marker[i], 'mouseout', (function (marker_value, i) {
+                        return function () {
+                            infowindow[i].close();
+                        }
+
+                    })(marker[i], i));
+
+                    
+                    document.getElementsByClassName("gallery")[i].innerHTML = contentString[i];
+                    document.getElementsByClassName("gallery")[i].addEventListener( 'mouseover', (function (marker_value, i) {
+                        return function () {
+                            marker[i] = new google.maps.Marker({
+                                position: { lat: data[i].Lat, lng: data[i].Lng },
+                                //label: icons[iconIndex++ % icons.length],
+                                label: {
+                                    text: icons[iconIndex++ % icons.length],
+                                    fontWeight: 'bold',
+                                    fontSize: '5px',
+                                    fontFamily: '"Courier New", Courier,Monospace',
+                                    color: 'red'
+                                },
+
+                                icon: {
+                                    url: '../Icons/map-icon-surface-metal1.png',
+                                    size: new google.maps.Size(30, 30),
+                                    origin: new google.maps.Point(0, 0),
+                                    anchor: new google.maps.Point(0, 20),
+                                    scaledSize: new google.maps.Size(30, 30),
+                                    labelOrigin: new google.maps.Point(9, 8)
+                                },
+
+                                map: map
+                            });
+                        }
+
+                    })(marker[i], i));
+
+                    document.getElementsByClassName("gallery")[i].addEventListener('mouseout', (function (marker_value, i) {
+                        return function () {
+                            marker[i] = new google.maps.Marker({
+                                position: { lat: data[i].Lat, lng: data[i].Lng },
+                                //label: icons[iconIndex++ % icons.length],
+                                label: {
+                                    text: icons[iconIndex++ % icons.length],
+                                    fontWeight: 'bold',
+                                    fontSize: '5px',
+                                    fontFamily: '"Courier New", Courier,Monospace',
+                                    color: 'black'
+                                },
+
+                                icon: {
+                                    url: '../Icons/map-icon-surface-metal.png',
+                                    size: new google.maps.Size(30, 30),
+                                    origin: new google.maps.Point(0, 0),
+                                    anchor: new google.maps.Point(0, 20),
+                                    scaledSize: new google.maps.Size(30, 30),
+                                    labelOrigin: new google.maps.Point(9, 8)
+                                },
+
+                                map: map
+                            });
+                        }
+
+                    })(marker[i], i));
+
+
+                    
+                }
+
+            });
+
+        }
+
+
+
+    </script>
+
+   
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+      $("#searchInputhome").autocomplete({
+    source: '@Url.Action("GetHomesLocationsDynamically")',
+       minLength: 1
+    });
+    });
+    </script>
+
+
+    
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8xnA_5khbykJTHwbaPXNisdPRaYgcHSI&callback=initMap"
+            type="text/javascript"></script>
+   
+</body>
+
+</html>
